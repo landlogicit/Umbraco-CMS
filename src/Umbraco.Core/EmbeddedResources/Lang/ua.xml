@@ -806,13 +806,13 @@
   </area>
   <area alias="login">
     <key alias="bottomText"><![CDATA[<p style="text-align:right;">&copy; 2001 - %0% <br /><a href="https://umbraco.com" style="text-decoration: none" target="_blank" rel="noopener">umbraco.com</a></p>]]></key>
-    <key alias="greeting0">Сьогодні ж вихідний!</key>
-    <key alias="greeting1">Гарного і продуктивного понеділка</key>
-    <key alias="greeting2">Ось уже вівторок...</key>
-    <key alias="greeting3">Бережіть довкілля</key>
-    <key alias="greeting4">Скоро п'ятниця</key>
-    <key alias="greeting5">Слава Богу, сьогодні п'ятниця!</key>
-    <key alias="greeting6">Понеділок починається у суботу</key>
+    <key alias="greeting0">Вітаємо</key>
+    <key alias="greeting1">Вітаємо</key>
+    <key alias="greeting2">Вітаємо</key>
+    <key alias="greeting3">Вітаємо</key>
+    <key alias="greeting4">Вітаємо</key>
+    <key alias="greeting5">Вітаємо</key>
+    <key alias="greeting6">Вітаємо</key>
     <key alias="instruction">Вкажіть ім'я користувача та пароль</key>
     <key alias="timeout">Час сесії закінчився</key>
     <key alias="forgottenPassword">Забули пароль?</key>
@@ -1703,8 +1703,7 @@
     <key alias="usergroup">Група користувачів</key>
     <key alias="userInvited"> був запрошений</key>
     <key alias="userInvitedSuccessHelp">Новому користувачеві було надіслано запрошення, яке містить інструкції для входу в панель Umbraco.</key>
-    <key alias="userinviteWelcomeMessage">Привіт і ласкаво просимо до Umbraco! Все буде готове протягом декількох хвилин, нам потрібно задати пароль для входу і додати аватар.</key>
-    <key alias="userinviteAvatarMessage">Завантажте зображення, що допоможе іншим користувачам ідентифікувати Вас.</key>
+    <key alias="userinviteWelcomeMessage">Привіт і ласкаво просимо до Umbraco! Все буде готове протягом декількох хвилин, нам потрібно задати пароль для входу.</key>
     <key alias="userManagement">Управління користувачами</key>
     <key alias="userPermissions">Дозволи для користувача</key>
     <key alias="writer">Автор</key>

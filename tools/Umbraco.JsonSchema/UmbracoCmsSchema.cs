@@ -37,6 +37,7 @@ internal class UmbracoCmsSchema
         public ImagingSettings Imaging { get; set; } = null!;
 
         public IndexCreatorSettings Examine { get; set; } = null!;
+        public IndexingSettings Indexing { get; set; } = null!;
 
         public KeepAliveSettings KeepAlive { get; set; } = null!;
 
@@ -79,5 +80,7 @@ internal class UmbracoCmsSchema
         public DataTypesSettings DataTypes { get; set; } = null!;
 
         public MarketplaceSettings Marketplace { get; set; } = null!;
+
+        public WebhookSettings Webhook { get; set; } = null!;
     }
 }

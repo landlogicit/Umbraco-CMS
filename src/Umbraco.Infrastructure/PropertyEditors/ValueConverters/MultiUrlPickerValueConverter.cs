@@ -17,6 +17,7 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Core.PropertyEditors.ValueConverters;
 
+[DefaultPropertyValueConverter(typeof(JsonValueConverter))]
 public class MultiUrlPickerValueConverter : PropertyValueConverterBase, IDeliveryApiPropertyValueConverter
 {
     private readonly IJsonSerializer _jsonSerializer;
@@ -184,6 +185,7 @@ public class MultiUrlPickerValueConverter : PropertyValueConverterBase, IDeliver
                         ? null
                         : ApiLink.Content(
                             item.Name.IfNullOrWhiteSpace(_apiContentNameProvider.GetName(content)),
+                            item.QueryString,
                             item.Target,
                             content.Key,
                             content.ContentType.Alias,
@@ -194,12 +196,13 @@ public class MultiUrlPickerValueConverter : PropertyValueConverterBase, IDeliver
                         ? null
                         : ApiLink.Media(
                             item.Name.IfNullOrWhiteSpace(_apiContentNameProvider.GetName(media)),
-                            _apiMediaUrlProvider.GetUrl(media),
+                            $"{_apiMediaUrlProvider.GetUrl(media)}{item.QueryString}",
+                            item.QueryString,
                             item.Target,
                             media.Key,
                             media.ContentType.Alias);
                 default:
-                    return ApiLink.External(item.Name, $"{item.Url}{item.QueryString}", item.Target);
+                    return ApiLink.External(item.Name, $"{item.Url}{item.QueryString}", item.QueryString, item.Target);
             }
         }
 

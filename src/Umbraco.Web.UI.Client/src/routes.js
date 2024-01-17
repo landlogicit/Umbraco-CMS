@@ -82,9 +82,6 @@ window.app.config(function ($routeProvider) {
         return {
             isLoggedOut: function ($q, $location, userService) {
                 return userService.logout().then(function () {
-                    // we have to redirect here instead of the routes redirectTo
-                    // https://github.com/angular/angular.js/commit/7f4b356c2bebb87f0c26b57a20415b004b20bcd1
-                    $location.path("/login/false");
                     //success so continue
                     return $q.when(true);
                 }, function() {
@@ -175,9 +172,8 @@ window.app.config(function ($routeProvider) {
                 if ($routeParams.section.toLowerCase() === "users" && $routeParams.tree.toLowerCase() === "users" && usersPages.indexOf($routeParams.method.toLowerCase()) === -1) {
                     $scope.templateUrl = "views/users/overview.html";
                     return;
-              }
-
-              $scope.templateUrl = navigationService.getTreeTemplateUrl($routeParams.tree, $routeParams.method, $routeParams.section);
+                }
+                $scope.templateUrl = navigationService.getTreeTemplateUrl($routeParams.tree, $routeParams.method);
             },
             reloadOnSearch: false,
             resolve: canRoute(true)
@@ -191,9 +187,8 @@ window.app.config(function ($routeProvider) {
                 if (!$routeParams.tree || !$routeParams.method) {
                     $scope.templateUrl = "views/common/dashboard.html";
                     return;
-              }
-
-              $scope.templateUrl = navigationService.getTreeTemplateUrl($routeParams.tree, $routeParams.method, $routeParams.section);
+                }
+                $scope.templateUrl = navigationService.getTreeTemplateUrl($routeParams.tree, $routeParams.method);
             },
             reloadOnSearch: false,
             reloadOnUrl: false,

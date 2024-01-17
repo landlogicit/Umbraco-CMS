@@ -89,6 +89,9 @@ internal class PublishedElementPropertyBase : PublishedPropertyBase
     private void GetDeliveryApiCacheLevels(out PropertyCacheLevel cacheLevel, out PropertyCacheLevel referenceCacheLevel)
         => GetCacheLevels(PropertyType.DeliveryApiCacheLevel, out cacheLevel, out referenceCacheLevel);
 
+    private void GetDeliveryApiCacheLevelsForExpansion(out PropertyCacheLevel cacheLevel, out PropertyCacheLevel referenceCacheLevel)
+        => GetCacheLevels(PropertyType.DeliveryApiCacheLevelForExpansion, out cacheLevel, out referenceCacheLevel);
+
     private void GetCacheLevels(PropertyCacheLevel propertyTypeCacheLevel, out PropertyCacheLevel cacheLevel, out PropertyCacheLevel referenceCacheLevel)
     {
         // based upon the current reference cache level (ReferenceCacheLevel) and this property
@@ -201,6 +204,7 @@ internal class PublishedElementPropertyBase : PublishedPropertyBase
         }
     }
 
+    [Obsolete("The current implementation of XPath is suboptimal and will be removed entirely in a future version. Scheduled for removal in v14")]
     public override object? GetXPathValue(string? culture = null, string? segment = null)
     {
         GetCacheLevels(out PropertyCacheLevel cacheLevel, out PropertyCacheLevel referenceCacheLevel);
@@ -222,7 +226,15 @@ internal class PublishedElementPropertyBase : PublishedPropertyBase
 
     public override object? GetDeliveryApiValue(bool expanding, string? culture = null, string? segment = null)
     {
-        GetDeliveryApiCacheLevels(out PropertyCacheLevel cacheLevel, out PropertyCacheLevel referenceCacheLevel);
+        PropertyCacheLevel cacheLevel, referenceCacheLevel;
+        if (expanding)
+        {
+            GetDeliveryApiCacheLevelsForExpansion(out cacheLevel, out referenceCacheLevel);
+        }
+        else
+        {
+            GetDeliveryApiCacheLevels(out cacheLevel, out referenceCacheLevel);
+        }
 
         lock (_locko)
         {

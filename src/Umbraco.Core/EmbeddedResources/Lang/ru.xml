@@ -806,13 +806,13 @@
   </area>
   <area alias="login">
     <key alias="bottomText"><![CDATA[<p style="text-align:right;">&copy; 2001 - %0% <br /><a href="https://umbraco.com" style="text-decoration: none" target="_blank" rel="noopener">umbraco.com</a></p>]]></key>
-    <key alias="greeting0">Сегодня же выходной!</key>
-    <key alias="greeting1">Понедельник — день тяжелый...</key>
-    <key alias="greeting2">Вот уже вторник...</key>
-    <key alias="greeting3">Берегите окружающую среду</key>
-    <key alias="greeting4">Рыбный день</key>
-    <key alias="greeting5">Слава Богу, сегодня пятница!</key>
-    <key alias="greeting6">Понедельник начинается в субботу</key>
+    <key alias="greeting0">Добро пожаловать</key>
+    <key alias="greeting1">Добро пожаловать</key>
+    <key alias="greeting2">Добро пожаловать</key>
+    <key alias="greeting3">Добро пожаловать</key>
+    <key alias="greeting4">Добро пожаловать</key>
+    <key alias="greeting5">Добро пожаловать</key>
+    <key alias="greeting6">Добро пожаловать</key>
     <key alias="instruction">Укажите имя пользователя и пароль</key>
     <key alias="timeout">Время сессии истекло</key>
     <key alias="forgottenPassword">Забыли пароль?</key>
@@ -1703,8 +1703,7 @@
     <key alias="usergroup">Группа пользователей</key>
     <key alias="userInvited"> был приглашен</key>
     <key alias="userInvitedSuccessHelp">Новому пользователю было отправлено приглашение, в котором содержатся инструкции для входа в панель Umbraco.</key>
-    <key alias="userinviteWelcomeMessage">Здравствуйте и добро пожаловать в Umbraco! Все будет готово в течении пары минут, нам лишь нужно задать Ваш пароль для входа и добавить аватар.</key>
-    <key alias="userinviteAvatarMessage">Загрузите изображение, это поможет другим пользователям идентифицировать Вас.</key>
+    <key alias="userinviteWelcomeMessage">Здравствуйте и добро пожаловать в Umbraco! Все будет готово в течении пары минут, нам лишь нужно задать Ваш пароль для входа.</key>
     <key alias="userManagement">Управление пользователями</key>
     <key alias="userPermissions">Разрешения для пользователя</key>
     <key alias="writer">Автор</key>
