@@ -5,12 +5,22 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Security.Claims;
 using System.Security.Principal;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core;
+using Umbraco.Cms.Core.DependencyInjection;
+using Umbraco.Cms.Core.Security;
 
 namespace Umbraco.Extensions;
 
 public static class ClaimsIdentityExtensions
 {
+    private static string? _authenticationType;
+    private static string AuthenticationType =>
+        _authenticationType ??= StaticServiceProvider.Instance?.GetService<IOptions<BackOfficeAuthenticationTypeSettings>>()?
+            .Value?
+            .AuthenticationType ?? Constants.Security.BackOfficeAuthenticationType;
+
     /// <summary>
     ///     Returns the required claim types for a back office identity
     /// </summary>
@@ -59,6 +69,31 @@ public static class ClaimsIdentityExtensions
         }
 
         return userId;
+    }
+
+    /// <summary>
+    ///     Returns the user key from the <see cref="IIdentity" /> of the claim type "sub".
+    /// </summary>
+    /// <param name="identity"></param>
+    /// <returns>
+    ///     The string value of the user id if found otherwise null.
+    /// </returns>
+    public static Guid? GetUserKey(this IIdentity identity)
+    {
+        if (identity is null)
+        {
+            throw new ArgumentNullException(nameof(identity));
+        }
+
+        string? userKey = null;
+        if (identity is ClaimsIdentity claimsIdentity)
+        {
+            userKey = claimsIdentity.FindFirstValue("sub");
+        }
+
+        return Guid.TryParse(userKey, out Guid result)
+            ? result
+            : null;
     }
 
     /// <summary>
@@ -147,9 +182,9 @@ public static class ClaimsIdentityExtensions
             }
         }
 
-        verifiedIdentity = identity.AuthenticationType == Constants.Security.BackOfficeAuthenticationType
+        verifiedIdentity = identity.AuthenticationType == AuthenticationType
             ? identity
-            : new ClaimsIdentity(identity.Claims, Constants.Security.BackOfficeAuthenticationType);
+            : new ClaimsIdentity(identity.Claims, AuthenticationType);
         return true;
     }
 
@@ -158,6 +193,7 @@ public static class ClaimsIdentityExtensions
     /// </summary>
     /// <param name="identity">this</param>
     /// <param name="userId">The users Id</param>
+    /// <param name="userKey">The users key</param>
     /// <param name="username">Username</param>
     /// <param name="realName">Real name</param>
     /// <param name="startContentNodes">Start content nodes</param>
@@ -166,7 +202,7 @@ public static class ClaimsIdentityExtensions
     /// <param name="securityStamp">Security stamp</param>
     /// <param name="allowedApps">Allowed apps</param>
     /// <param name="roles">Roles</param>
-    public static void AddRequiredClaims(this ClaimsIdentity identity, string userId, string username, string realName, IEnumerable<int>? startContentNodes, IEnumerable<int>? startMediaNodes, string culture, string securityStamp, IEnumerable<string> allowedApps, IEnumerable<string> roles)
+    public static void AddRequiredClaims(this ClaimsIdentity identity, string userId, Guid userKey, string username, string realName, IEnumerable<int>? startContentNodes, IEnumerable<int>? startMediaNodes, string culture, string securityStamp, IEnumerable<string> allowedApps, IEnumerable<string> roles)
     {
         // This is the id that 'identity' uses to check for the user id
         if (identity.HasClaim(x => x.Type == ClaimTypes.NameIdentifier) == false)
@@ -175,8 +211,20 @@ public static class ClaimsIdentityExtensions
                 ClaimTypes.NameIdentifier,
                 userId,
                 ClaimValueTypes.String,
-                Constants.Security.BackOfficeAuthenticationType,
-                Constants.Security.BackOfficeAuthenticationType,
+                AuthenticationType,
+                AuthenticationType,
+                identity));
+        }
+
+        // This is the id that 'identity' uses to check for the user id
+        if (identity.HasClaim(x => x.Type == Constants.Security.OpenIdDictSubClaimType) == false)
+        {
+            identity.AddClaim(new Claim(
+                Constants.Security.OpenIdDictSubClaimType,
+                userKey.ToString(),
+                ClaimValueTypes.String,
+                AuthenticationType,
+                AuthenticationType,
                 identity));
         }
 
@@ -186,8 +234,8 @@ public static class ClaimsIdentityExtensions
                 ClaimTypes.Name,
                 username,
                 ClaimValueTypes.String,
-                Constants.Security.BackOfficeAuthenticationType,
-                Constants.Security.BackOfficeAuthenticationType,
+                AuthenticationType,
+                AuthenticationType,
                 identity));
         }
 
@@ -197,8 +245,8 @@ public static class ClaimsIdentityExtensions
                 ClaimTypes.GivenName,
                 realName,
                 ClaimValueTypes.String,
-                Constants.Security.BackOfficeAuthenticationType,
-                Constants.Security.BackOfficeAuthenticationType,
+                AuthenticationType,
+                AuthenticationType,
                 identity));
         }
 
@@ -211,8 +259,8 @@ public static class ClaimsIdentityExtensions
                     Constants.Security.StartContentNodeIdClaimType,
                     startContentNode.ToInvariantString(),
                     ClaimValueTypes.Integer32,
-                    Constants.Security.BackOfficeAuthenticationType,
-                    Constants.Security.BackOfficeAuthenticationType,
+                    AuthenticationType,
+                    AuthenticationType,
                     identity));
             }
         }
@@ -226,8 +274,8 @@ public static class ClaimsIdentityExtensions
                     Constants.Security.StartMediaNodeIdClaimType,
                     startMediaNode.ToInvariantString(),
                     ClaimValueTypes.Integer32,
-                    Constants.Security.BackOfficeAuthenticationType,
-                    Constants.Security.BackOfficeAuthenticationType,
+                    AuthenticationType,
+                    AuthenticationType,
                     identity));
             }
         }
@@ -238,8 +286,8 @@ public static class ClaimsIdentityExtensions
                 ClaimTypes.Locality,
                 culture,
                 ClaimValueTypes.String,
-                Constants.Security.BackOfficeAuthenticationType,
-                Constants.Security.BackOfficeAuthenticationType,
+                AuthenticationType,
+                AuthenticationType,
                 identity));
         }
 
@@ -250,8 +298,8 @@ public static class ClaimsIdentityExtensions
                 Constants.Security.SecurityStampClaimType,
                 securityStamp,
                 ClaimValueTypes.String,
-                Constants.Security.BackOfficeAuthenticationType,
-                Constants.Security.BackOfficeAuthenticationType,
+                AuthenticationType,
+                AuthenticationType,
                 identity));
         }
 
@@ -264,8 +312,8 @@ public static class ClaimsIdentityExtensions
                     Constants.Security.AllowedApplicationsClaimType,
                     application,
                     ClaimValueTypes.String,
-                    Constants.Security.BackOfficeAuthenticationType,
-                    Constants.Security.BackOfficeAuthenticationType,
+                    AuthenticationType,
+                    AuthenticationType,
                     identity));
             }
         }
@@ -281,12 +329,14 @@ public static class ClaimsIdentityExtensions
                     identity.RoleClaimType,
                     roleName,
                     ClaimValueTypes.String,
-                    Constants.Security.BackOfficeAuthenticationType,
-                    Constants.Security.BackOfficeAuthenticationType,
+                    AuthenticationType,
+                    AuthenticationType,
                     identity));
             }
         }
     }
+
+
 
     /// <summary>
     ///     Get the start content nodes from a ClaimsIdentity
