@@ -65,6 +65,7 @@ public class ItemTypeMapDefinition : IMapDefinition
         target.Id = source.Key;
         target.Icon = source.Icon;
         target.IsElement = source.IsElement;
+        target.Description = source.Description;
     }
 
     // Umbraco.Code.MapAll
@@ -112,6 +113,7 @@ public class ItemTypeMapDefinition : IMapDefinition
         target.Id = source.Key;
         target.Name = source.Name ?? source.Alias;
         target.Icon = source.Icon;
+        target.Alias = source.Alias;
     }
 
     // Umbraco.Code.MapAll
