@@ -13,8 +13,8 @@ test.beforeEach(async ({umbracoUi, umbracoApi}) => {
 
 test.afterEach(async ({umbracoApi}) => {
   if (dataTypeDefaultData !== null) {
-    await umbracoApi.dataType.update(dataTypeDefaultData.id, dataTypeDefaultData);   
-  }   
+    await umbracoApi.dataType.update(dataTypeDefaultData.id, dataTypeDefaultData);
+  }
 });
 
 test('can show open button', async ({umbracoApi, umbracoUi}) => {
@@ -26,7 +26,7 @@ test('can show open button', async ({umbracoApi, umbracoUi}) => {
   await umbracoUi.dataType.goToDataType(dataTypeName);
 
   // Act
-  await umbracoUi.dataType.clickShowOpenButtonSlider();
+  await umbracoUi.dataType.clickShowOpenButtonToggle();
   await umbracoUi.dataType.clickSaveButton();
 
   // Assert
@@ -43,7 +43,7 @@ test('can ignore user start nodes', async ({umbracoApi, umbracoUi}) => {
   await umbracoUi.dataType.goToDataType(dataTypeName);
 
   // Act
-  await umbracoUi.dataType.clickIgnoreUserStartNodesSlider();
+  await umbracoUi.dataType.clickIgnoreUserStartNodesToggle();
   await umbracoUi.dataType.clickSaveButton();
 
   // Assert
@@ -93,10 +93,6 @@ test('can remove start node', async ({umbracoApi, umbracoUi}) => {
   const contentId = await umbracoApi.document.createDefaultDocument(contentName, documentTypeId);
   expect(await umbracoApi.document.doesExist(contentId)).toBeTruthy();
 
-  const expectedDataTypeValues = {
-    "alias": "startNodeId",
-    "value": ""
-  }
   const removedDataTypeValues = [{
     "alias": "startNodeId",
     "value": contentId
@@ -114,7 +110,7 @@ test('can remove start node', async ({umbracoApi, umbracoUi}) => {
 
   // Assert
   dataTypeData = await umbracoApi.dataType.getByName(dataTypeName);
-  expect(dataTypeData.values).toContainEqual(expectedDataTypeValues);
+  expect(dataTypeData.values).toEqual([]);
 
   // Clean
   await umbracoApi.document.ensureNameNotExists(contentName);

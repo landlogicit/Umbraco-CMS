@@ -9,9 +9,10 @@ schedules:
   branches:
     include:
     - v10/dev
-    - v12/dev
     - v13/dev
     - v14/dev
+    - v15/dev
+    - v16/dev
 
 steps:
 - checkout: none
@@ -26,7 +27,7 @@ steps:
     useSameBranch: true
     waitForQueuedBuildsToFinish: false
     storeInEnvironmentVariable: false
-    templateParameters: 'sqlServerIntegrationTests: true, sqlServerAcceptanceTests: true, forceReleaseTestFilter: true, myGetDeploy: true, isNightly: true'
+    templateParameters: 'sqlServerIntegrationTests: true, forceReleaseTestFilter: true, myGetDeploy: true, isNightly: true'
     authenticationMethod: 'OAuth Token'
     enableBuildInQueueCondition: false
     dependentOnSuccessfulBuildCondition: false

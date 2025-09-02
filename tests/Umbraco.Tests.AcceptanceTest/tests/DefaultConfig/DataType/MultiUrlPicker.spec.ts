@@ -14,8 +14,8 @@ test.beforeEach(async ({umbracoUi, umbracoApi}) => {
 
 test.afterEach(async ({umbracoApi}) => {
   if (dataTypeDefaultData !== null) {
-    await umbracoApi.dataType.update(dataTypeDefaultData.id, dataTypeDefaultData);   
-  }   
+    await umbracoApi.dataType.update(dataTypeDefaultData.id, dataTypeDefaultData);
+  }
 });
 
 test('can update minimum number of items value', async ({umbracoApi, umbracoUi}) => {
@@ -60,7 +60,7 @@ test('can enable ignore user start nodes', async ({umbracoApi, umbracoUi}) => {
   };
 
   // Act
-  await umbracoUi.dataType.clickIgnoreUserStartNodesSlider();
+  await umbracoUi.dataType.clickIgnoreUserStartNodesToggle();
   await umbracoUi.dataType.clickSaveButton();
 
   // Assert
@@ -93,7 +93,7 @@ test('can update hide anchor/query string input', async ({umbracoApi, umbracoUi}
   };
 
   // Act
-  await umbracoUi.dataType.clickHideAnchorQueryStringInputSlider();
+  await umbracoUi.dataType.clickHideAnchorQueryStringInputToggle();
   await umbracoUi.dataType.clickSaveButton();
 
   // Assert
@@ -102,7 +102,7 @@ test('can update hide anchor/query string input', async ({umbracoApi, umbracoUi}
 });
 
 // TODO: Remove skip when the front-end is ready. Currently you still can update the minimum greater than the maximum.
-test.skip('cannot update the minimum number of items greater than the Maximum', async ({umbracoUi}) => {
+test.skip('cannot update the minimum number of items greater than the maximum', async ({umbracoUi}) => {
   // Arrange
   const minimumValue = 5;
   const maximumValue = 2;

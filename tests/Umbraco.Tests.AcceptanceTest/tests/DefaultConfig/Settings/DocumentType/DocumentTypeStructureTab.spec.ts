@@ -76,14 +76,14 @@ test('can configure a collection for a document type', async ({umbracoApi, umbra
   // Arrange
   const collectionDataTypeName = 'TestCollection';
   await umbracoApi.dataType.ensureNameNotExists(collectionDataTypeName);
-  const collectionDataTypeId = await umbracoApi.dataType.create(collectionDataTypeName, 'Umbraco.ListView', [], null, 'Umb.PropertyEditorUi.CollectionView');
+  const collectionDataTypeId = await umbracoApi.dataType.create(collectionDataTypeName, 'Umbraco.ListView', 'Umb.PropertyEditorUi.Collection', []);
   await umbracoApi.documentType.createDefaultDocumentType(documentTypeName);
   await umbracoUi.documentType.goToSection(ConstantHelper.sections.settings);
 
   // Act
   await umbracoUi.documentType.goToDocumentType(documentTypeName);
   await umbracoUi.documentType.clickStructureTab();
-  await umbracoUi.documentType.clickConfigureAsACollectionButton();
+  await umbracoUi.documentType.clickAddCollectionButton();
   await umbracoUi.documentType.clickTextButtonWithName(collectionDataTypeName);
   await umbracoUi.documentType.clickSaveButton();
 

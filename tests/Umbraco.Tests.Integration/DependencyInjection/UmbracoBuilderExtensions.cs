@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
+using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.Configuration.Models;
@@ -46,8 +47,6 @@ public static class UmbracoBuilderExtensions
         builder.Services.AddUnique(testHelper.MainDom);
 
         builder.Services.AddUnique<IIndexRebuilder, TestBackgroundIndexRebuilder>();
-        // we don't want persisted nucache files in tests
-        builder.Services.AddTransient(factory => new PublishedSnapshotServiceOptions { IgnoreLocalDb = true });
 
 #if IS_WINDOWS
         // ensure all lucene indexes are using RAM directory (no file system)
@@ -97,6 +96,8 @@ public static class UmbracoBuilderExtensions
         builder.Services.AddSingleton<IDistributedLockingMechanism, SqliteEFCoreDistributedLockingMechanism<TestUmbracoDbContext>>();
         builder.Services.AddSingleton<IDistributedLockingMechanism, SqlServerEFCoreDistributedLockingMechanism<TestUmbracoDbContext>>();
 
+        builder.Services.AddSingleton<IReservedFieldNamesService, ReservedFieldNamesService>();
+
         return builder;
     }
 
@@ -132,7 +133,7 @@ public static class UmbracoBuilderExtensions
                     uiProject.Create();
                 }
 
-                var mainLangFolder = new DirectoryInfo(Path.Combine(uiProject.FullName, globalSettings.Value.UmbracoPath.TrimStart("~/"), "config", "lang"));
+                var mainLangFolder = new DirectoryInfo(Path.Combine(uiProject.FullName, Constants.System.DefaultUmbracoPath.TrimStart("~/"), "config", "lang"));
 
                 return new LocalizedTextServiceFileSources(
                     loggerFactory.CreateLogger<LocalizedTextServiceFileSources>(),

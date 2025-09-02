@@ -98,13 +98,13 @@ test('can configure a collection for a media type', async ({umbracoApi, umbracoU
   // Arrange
   const collectionDataTypeName = 'TestCollection';
   await umbracoApi.dataType.ensureNameNotExists(collectionDataTypeName);
-  const collectionDataTypeId = await umbracoApi.dataType.create(collectionDataTypeName, 'Umbraco.ListView', [], null, 'Umb.PropertyEditorUi.CollectionView');
+  const collectionDataTypeId = await umbracoApi.dataType.create(collectionDataTypeName, 'Umbraco.ListView', 'Umb.PropertyEditorUi.Collection', []);
   await umbracoApi.mediaType.createDefaultMediaType(mediaTypeName);
 
   // Act
   await umbracoUi.mediaType.goToMediaType(mediaTypeName);
   await umbracoUi.mediaType.clickStructureTab();
-  await umbracoUi.mediaType.clickConfigureAsACollectionButton();
+  await umbracoUi.mediaType.clickAddCollectionButton();
   await umbracoUi.mediaType.clickTextButtonWithName(collectionDataTypeName);
   await umbracoUi.mediaType.clickSaveButton();
 

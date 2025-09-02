@@ -14,8 +14,8 @@ test.beforeEach(async ({umbracoUi, umbracoApi}) => {
 
 test.afterEach(async ({umbracoApi}) => {
   if (dataTypeDefaultData !== null) {
-    await umbracoApi.dataType.update(dataTypeDefaultData.id, dataTypeDefaultData);   
-  }   
+    await umbracoApi.dataType.update(dataTypeDefaultData.id, dataTypeDefaultData);
+  }
 });
 
 test('can update minimum value', async ({umbracoApi, umbracoUi}) => {
@@ -77,7 +77,7 @@ test.skip('can allow decimals', async ({umbracoApi, umbracoUi}) => {
   };
 
   // Act
-  await umbracoUi.dataType.clickAllowDecimalsSlider();
+  await umbracoUi.dataType.clickAllowDecimalsToggle();
   await umbracoUi.dataType.clickSaveButton();
 
   // Assert
